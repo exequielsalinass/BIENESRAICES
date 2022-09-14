@@ -1,0 +1,26 @@
+{
+  "name": "bienesraices",
+  "version": "1.0.0",
+  "description": "Proyecto de Bienes Raices",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/exequielsalinass/BIENESRAICES.git"
+  },
+  "keywords": [
+    "MVC",
+    "PuG",
+    "TAILWIND",
+    "NODE",
+    "REACT"
+  ],
+  "author": "Exequiel Salinas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/exequielsalinass/BIENESRAICES/issues"
+  },
+  "homepage": "https://github.com/exequielsalinass/BIENESRAICES#readme"
+}

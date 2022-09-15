@@ -1,4 +1,5 @@
 import { check, validationResult } from "express-validator";
+import { generarJWT, generarId } from '../helpers/tokens.js'
 import Usuario from "../models/Usuario.js";
 
 const formularioLogin = (req, res) => {
@@ -72,7 +73,7 @@ const registrar = async (req, res) => {
       nombre,
       email,
       password,
-      token: 123,
+      token: generarId(),
     });
   } catch (error) {
     console.log(error);

@@ -1,5 +1,5 @@
 import { check, validationResult } from "express-validator";
-import { generarJWT, generarId } from '../helpers/tokens.js'
+import { generarJWT, generarId } from "../helpers/tokens.js";
 import Usuario from "../models/Usuario.js";
 
 const formularioLogin = (req, res) => {
@@ -75,6 +75,14 @@ const registrar = async (req, res) => {
       password,
       token: generarId(),
     });
+
+    //Mostrar msj
+    res.render("templates/mensaje", {
+      pagina: "Cuenta Creada Correctamente",
+      mensaje:
+        "Hemos enviado un email. Revisa tu correo. Puede tardar unos minutos...",
+    });
+
   } catch (error) {
     console.log(error);
   }

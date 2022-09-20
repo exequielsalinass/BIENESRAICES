@@ -1,5 +1,6 @@
 import { check, validationResult } from "express-validator";
 import { generarJWT, generarId } from "../helpers/tokens.js";
+import { emailRegistro } from "../helpers/emails.js";
 import Usuario from "../models/Usuario.js";
 
 const formularioLogin = (req, res) => {
@@ -76,15 +77,36 @@ const registrar = async (req, res) => {
       token: generarId(),
     });
 
+    //Envia email de confirmacion
+    emailRegistro({
+      nombre: usuario.nombre,
+      email: usuario.email,
+      token: usuario.token,
+    });
+
     //Mostrar msj
     res.render("templates/mensaje", {
       pagina: "Cuenta Creada Correctamente",
       mensaje:
         "Hemos enviado un email. Revisa tu correo. Puede tardar unos minutos...",
     });
-
   } catch (error) {
     console.log(error);
+  }
+};
+
+// Funcion que comprueba una cuenta
+const confirmar = async (req, res) => {
+  const { token } = req.params;
+
+  const usuario = await Usuario.findOne({ where: { token: token } });
+
+  if (!usuario) {
+    return res.render("auth/confirmar-cuenta", {
+      pagina: "Error al confirmar tu cuenta",
+      mensaje: "Hubo un error al confirmar. Intenta de nuevo",
+      error: true,
+    });
   }
 };
 
@@ -99,4 +121,5 @@ export {
   formularioRegistro,
   formularioOlvidePassword,
   registrar,
+  confirmar,
 };

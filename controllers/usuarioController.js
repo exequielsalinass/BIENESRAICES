@@ -1,6 +1,6 @@
 import { check, validationResult } from "express-validator";
 import { generarJWT, generarId } from "../helpers/tokens.js";
-import { emailRegistro } from "../helpers/emails.js";
+import { emailRegistro, emailOlvidePassword } from "../helpers/emails.js";
 import Usuario from "../models/Usuario.js";
 
 const formularioLogin = (req, res) => {
@@ -189,7 +189,7 @@ const comprobarToken = async (req, res) => {
   if (!usuario) {
     return res.render("auth/confirmar-cuenta", {
       pagina: "Recupera tu contraseña",
-      mensaje: "Hubo un error al validar tu informaicon. Intenta de nuevo",
+      mensaje: "Hubo un error al validar tu información. Intenta de nuevo",
       error: true,
     });
   }

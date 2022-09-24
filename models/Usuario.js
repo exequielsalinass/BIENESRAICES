@@ -34,6 +34,7 @@ const Usuario = db.define("usuarios", {
     }
 })
 
+// Agrego una funcion al prototype del Usuario
 // Esto retorna true o false
 Usuario.prototype.verificarPassword = function(password){
     return bcrypt.compareSync(password, this.password)

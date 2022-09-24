@@ -1,4 +1,5 @@
 import { check, validationResult } from "express-validator";
+import bcrypt from "bcrypt"
 import { generarJWT, generarId } from "../helpers/tokens.js";
 import { emailRegistro, emailOlvidePassword } from "../helpers/emails.js";
 import Usuario from "../models/Usuario.js";
@@ -226,6 +227,7 @@ const nuevoPassword = async (req, res) => {
     //Identificar usuario que solicita el cambio
     const usuario = await Usuario.findOne({ where: { token: token } });
 
+    // Hashear el nuevo password
     const salt = await bcrypt.genSalt(10);
     usuario.password = await bcrypt.hash(password, salt);
 

@@ -1,8 +1,8 @@
 (function () {
   // el valor de la derecha es el predeterminado, el de la izquierda es cuando alguien hizo un post con errores, para que se quede guardada la ubicacion
   // fijarse en archivo crear.pug, de ahí saco estos valores
-  const lat = -32.9838598;
-  const lng = -68.7887384;
+  const lat = document.querySelector("#lat").value || -32.9838598;
+  const lng = document.querySelector("#lng").value || -68.7887384;
   const mapa = L.map("mapa").setView([lat, lng], 13);
   let marker;
 

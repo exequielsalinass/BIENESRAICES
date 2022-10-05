@@ -114,6 +114,15 @@ const agregarImagen = async (req, res) => {
   });
 };
 
+const almacenarImagen = async (req, res) => {};
+
 const guardarCambios = async (req, res) => {};
 
-export { admin, crear, guardar, agregarImagen, guardarCambios };
+export {
+  admin,
+  crear,
+  guardar,
+  agregarImagen,
+  guardarCambios,
+  almacenarImagen,
+};

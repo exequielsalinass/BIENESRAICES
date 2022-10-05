@@ -3,7 +3,7 @@ import { Precio, Categoria, Propiedad } from "../models/index.js";
 
 const admin = (req, res) => {
   res.render("propiedades/admin", {
-    pagina: "Mis Propiedades"
+    pagina: "Mis Propiedades",
   });
 };
 
@@ -91,18 +91,18 @@ const agregarImagen = async (req, res) => {
   const { usuario } = req;
 
   //Validar que la propiedad exista
-  const propiedad = await Propiedad.findByPk(id);
+  const propiedad = await Propiedad.findByPk(id); //buscar por primary key
   if (!propiedad) {
     return res.redirect("/mis-propiedades");
   }
 
-  //Validar que no este publicada(tiene que ser false)
+  //Validar que no este publicada(tiene que ser false) -- 0 retorna false
   if (propiedad.publicado) {
     return res.redirect("/mis-propiedades");
   }
 
   //Validar que la propiedad pertenece a quien visita la pagina. Al comparar id es recomendable pasarlos a toString()
-  // porque algunos ORM´s los evalua como objetos y siempre daria false aunque los id´s sean iguales
+  // porque algunos ORM´s los evalua como objetos y siempre daria false aunque los id's sean iguales
   if (usuario.id.toString() !== propiedad.usuarioId.toString()) {
     return res.redirect("/mis-propiedades");
   }
@@ -114,4 +114,6 @@ const agregarImagen = async (req, res) => {
   });
 };
 
-export { admin, crear, guardar, agregarImagen };
+const guardarCambios = async (req, res) => {};
+
+export { admin, crear, guardar, agregarImagen, guardarCambios };

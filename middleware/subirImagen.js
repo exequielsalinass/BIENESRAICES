@@ -1,5 +1,5 @@
 import multer from "multer"; //Dependencia para poder leer archivos
-import path from "path";    // Interno de js -> me retorna la ubicacion en el disco duro
+import path from "path"; // Interno de js -> me retorna la ubicacion en el disco duro
 import { generarId } from "../helpers/tokens.js";
 
 const storage = multer.diskStorage({

@@ -114,15 +114,47 @@ const agregarImagen = async (req, res) => {
   });
 };
 
-const almacenarImagen = async (req, res) => {};
+const almacenarImagen = async (req, res, next) => {
+  const { id } = req.params;
+  const { usuario } = req;
 
-const guardarCambios = async (req, res) => {};
+  //Validar que la propiedad exista
+  const propiedad = await Propiedad.findByPk(id);
+  if (!propiedad) {
+    return res.redirect("/mis-propiedades");
+  }
+
+  //Validar que no este publicada(tiene que ser false)
+  if (propiedad.publicado) {
+    return res.redirect("/mis-propiedades");
+  }
+
+  //Validar que la propiedad pertenece a quien visita la pagina. Al comparar id es recomendable pasarlos a toString()
+  // porque algunos ORM´s los evalua como objetos y siempre daria false aunque los id´s sean iguales
+  if (usuario.id.toString() !== propiedad.usuarioId.toString()) {
+    return res.redirect("/mis-propiedades");
+  }
+
+  try {
+    // console.log(req.file)
+    // req.file.filname es igual generarId().jpg o .png o jpeg
+    // Almacenar imagen y publicar propiedad
+    propiedad.imagen = req.file.filename;
+    propiedad.publicado = true;
+
+    await propiedad.save();
+    /* return res.redirect("/mis-propiedades"); //este redirect se hace desde la funcion dropzone en agregarImagen.js */
+    next();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
 export {
   admin,
   crear,
   guardar,
   agregarImagen,
-  guardarCambios,
   almacenarImagen,
 };

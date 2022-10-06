@@ -2,8 +2,6 @@ import { exit } from "node:process";
 import categorias from "./categorias.js";
 import precios from "./precios.js";
 import usuarios from './usuario.js'
-/* import Categoria from "../models/Categoria.js";
-import Precio from "../models/Precio.js"; */
 import { Categoria, Precio, Usuario } from '../models/index.js'
 import db from "../config/db.js";
 

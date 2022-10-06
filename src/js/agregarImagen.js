@@ -17,7 +17,7 @@ Dropzone.options.imagen = {
     "CSRF-Token": token,
   },
   paramName: "imagen",
-  init: function () {
+  init: function () {       //* init: function -> me permite reescribir sobre el obj de dropzone, de esta forma puedo cambiar un poco el comportamiento de la libreria
     const dropzone = this;
     const btnPublicar = document.querySelector("#publicar");
 
@@ -25,8 +25,9 @@ Dropzone.options.imagen = {
       dropzone.processQueue();
     });
 
+    //Evento de dropzone --> leer documentación
     dropzone.on("queuecomplete", function () {
-      if (dropzone.getActiveFiles().length == 0) {
+      if (dropzone.getActiveFiles().length == 0) {  //* dropzone.getActiveFiles().length => ¿Cuatos archivos quedan por subir?
         window.location.href = "/mis-propiedades";
       }
     });

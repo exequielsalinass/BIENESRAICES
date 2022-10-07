@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator";
-import { unlink } from "node:fs/promises"
+import { unlink } from "node:fs/promises";
 import { Precio, Categoria, Propiedad } from "../models/index.js";
 
 const admin = async (req, res) => {
@@ -294,6 +294,35 @@ const eliminar = async (req, res) => {
   res.redirect("/mis-propiedades");
 };
 
+const mostrarPropiedad = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Comprobar que la propiedad exista
+    const propiedad = await Propiedad.findByPk(id, {
+      include: [
+        { model: Categoria, as: 'categoria' },
+        { model: Precio, as: 'precio' },
+        /* { model: Usuario.scope("eliminarPassword") }, */
+      ],
+    });
+
+    if (!propiedad) {
+      return res.redirect("/404");
+    }
+
+    res.render("propiedades/mostrar", {
+      propiedad: propiedad,
+      pagina: propiedad.titulo,
+      csrfToken: req.csrfToken(),
+      /* usuario: req.usuario, // viene del midellware identificar usuario
+      esVendedor: esVendedor(req.usuario?.id, propiedad?.usuarioId), // Se fija si el usuario que esta visitando la propiedad es el mismo que la creó */
+    });
+  } catch (error) {
+    return res.redirect("/404");
+  }
+};
+
 export {
   admin,
   crear,
@@ -303,4 +332,5 @@ export {
   editar,
   guardarCambios,
   eliminar,
+  mostrarPropiedad,
 };

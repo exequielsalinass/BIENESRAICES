@@ -4,23 +4,51 @@ import { Precio, Categoria, Propiedad } from "../models/index.js";
 
 const admin = async (req, res) => {
   // Hago la consulta para traerme todas las propiedades que sean de un usuario
-  const { id } = req.usuario;
+  const { usuario } = req;
+  //* Leer QueryString
+  const { pagina: paginaActual } = req.query; // Para el paginado, asi se renombra una variable
 
-  const propiedades = await Propiedad.findAll({
-    where: {
-      usuarioId: id,
-    },
-    include: [
-      { model: Categoria }, // se le puede agregar esto : , as: "categoria" (para llamarlo como queramos)
-      { model: Precio },
-    ],
-  });
+  const expresion = /^[1-9]$/; //regex el ^ y $ significa que tiene que empezar y terminar con numeros
 
-  res.render("propiedades/admin", {
-    pagina: "Mis Propiedades",
-    propiedades,
-    csrfToken: req.csrfToken(),
-  });
+  //Devuelve true o false. Es una funcion de regex que prueba si la variables pasada cumple con la expresion regular
+  if (!expresion.test(paginaActual)) {
+    //* No tiene nada que ver con testing
+    return res.redirect("/mis-propiedades?pagina=1");
+  }
+
+  try {
+    // Limites y Offset para el paginador
+    const limit = 10;
+    const offset = paginaActual * limit - limit;
+
+    const [propiedades, total] = await Promise.all([
+      Propiedad.findAll({
+        limit: limit,
+        offset: offset,
+        where: {
+          usuarioId: usuario.id,
+        },
+        include: [
+          { model: Categoria }, // se le puede agregar esto : , as: "categoria" (para llamarlo como queramos)
+          { model: Precio },
+        ],
+      }),
+      Propiedad.count({ where: { usuarioId: usuario.id } }), // Para contar la cantidad de propiedades totales
+    ]);
+
+    res.render("propiedades/admin", {
+      pagina: "Mis Propiedades",
+      csrfToken: req.csrfToken(),
+      propiedades: propiedades,
+      paginaActual: Number(paginaActual),
+      paginas: Math.ceil(total / limit),
+      total: total,
+      offset: offset,
+      limit: limit,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // Formulario para crear una nueva propiedad
@@ -301,8 +329,8 @@ const mostrarPropiedad = async (req, res) => {
     // Comprobar que la propiedad exista
     const propiedad = await Propiedad.findByPk(id, {
       include: [
-        { model: Categoria, as: 'categoria' },
-        { model: Precio, as: 'precio' },
+        { model: Categoria, as: "categoria" },
+        { model: Precio, as: "precio" },
         /* { model: Usuario.scope("eliminarPassword") }, */
       ],
     });

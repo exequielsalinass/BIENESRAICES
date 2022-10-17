@@ -18,10 +18,10 @@ const admin = async (req, res) => {
 
   try {
     // Limites y Offset para el paginador
-    const limit = 10;
+    const limit = 5;
     const offset = paginaActual * limit - limit;
 
-    const [propiedades /* , total */] = await Promise.all([
+    const [propiedades , total] = await Promise.all([
       Propiedad.findAll({
         limit: limit,
         offset: offset,
@@ -35,8 +35,6 @@ const admin = async (req, res) => {
       }),
       Propiedad.count({ where: { usuarioId: usuario.id } }), // Para contar la cantidad de propiedades totales
     ]);
-
-    const total = 100;
 
     res.render("propiedades/admin", {
       pagina: "Mis Propiedades",

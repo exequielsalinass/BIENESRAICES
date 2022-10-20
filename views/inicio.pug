@@ -1,0 +1,59 @@
+extends ./layout/app
+
+block styles
+    link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+
+block contenido 
+    div(class="py-5")
+        h1(class="text-center text-4xl font-extrabold") Ubicación en el Mapa
+
+        div(class="flex flex-col md:flex-row items-center py-10 gap-4")
+            h2(class="text-sm uppercase text-gray-800 font-bold") Filtrar Propiedades:
+            
+            div(class="w-full md:w-auto flex items-center gap-2")
+                label(for="categorias" class="text-sm md:w-auto w-24 uppercase text-gray-500 font-bold") Categorias 
+                select(id="categorias" class="flex-1 bg-white w-full py-2 px-3 border border-gray-300 roundend-md shadow") 
+                    option(value="") - Seleccione - 
+                    each categoria in categorias 
+                        option(value= categoria.nombre)= categoria.nombre
+
+            div(class="w-full md:w-auto flex items-center gap-2")
+                label(for="precios" class="text-sm md:w-auto w-24 uppercase text-gray-500 font-bold") Precios 
+                select(id="precios" class="flex-1 bg-white w-full py-2 px-3 border border-gray-300 roundend-md shadow") 
+                    option(value="") - Seleccione - 
+                    each precio in precios 
+                        option(value= precio.nombre)= precio.nombre 
+                        
+            if usuario 
+                a(href="/mis-propiedades" class="rounded py-2 px-10 mx-10 bg-indigo-600 hover:bg-indigo-700 text-sm font-bold text-center text-white uppercase my-5 inline-block w-full sm:w-auto") Mis Propiedades            
+
+        div(id="mapa-inicio" class="h-[600px] mt-10")
+
+        if casas.length
+            section(class="py-5")
+            h2(class="text-center text-4xl font-extrabold pt-10") Casas en Venta
+
+            //- pre= JSON.stringify(casas, undefined, 2)
+            div(class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5 mt-14")
+                each propiedad in casas 
+                    include ./templates/card
+        else 
+            p.text-center.mt-10.font-bold.uppercase aún No Hay Casas en Venta.
+                    
+        if departamentos.length 
+            section(class="py-5")
+            h2(class="text-center text-4xl font-extrabold pt-10") Departamentos en Venta
+
+            //- pre= JSON.stringify(departamentos, undefined, 2)
+            div(class="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-14")
+                each propiedad in departamentos 
+                    include ./templates/card
+        else 
+            p.text-center.font-bold.uppercase aún No Hay departamentos en Venta.
+
+block scripts
+    script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
+    script(src="/js/mapaInicio.js")           
+    //- script(src="https://unpkg.com/esri-leaflet@3.0.8/dist/esri-leaflet.js")
+    //- script(src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js") Estos sirven para el geocoding
+    //- script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geosearch/2.7.0/bundle.min.js")

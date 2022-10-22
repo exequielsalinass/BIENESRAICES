@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
 import { unlink } from "node:fs/promises";
 import { Precio, Categoria, Propiedad } from "../models/index.js";
+import { esVendedor } from "../helpers/index.js";
 
 const admin = async (req, res) => {
   // Hago la consulta para traerme todas las propiedades que sean de un usuario
@@ -344,8 +345,8 @@ const mostrarPropiedad = async (req, res) => {
       propiedad: propiedad,
       pagina: propiedad.titulo,
       csrfToken: req.csrfToken(),
-      /* usuario: req.usuario, // viene del midellware identificar usuario
-      esVendedor: esVendedor(req.usuario?.id, propiedad?.usuarioId), // Se fija si el usuario que esta visitando la propiedad es el mismo que la creó */
+      usuario: req.usuario, // viene del midellware identificar usuario
+      esVendedor: esVendedor(req.usuario?.id, propiedad?.usuarioId), // Se fija si el usuario que esta visitando la propiedad es el mismo que la creó
     });
   } catch (error) {
     return res.redirect("/404");

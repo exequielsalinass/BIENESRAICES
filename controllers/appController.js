@@ -1,4 +1,4 @@
-import { Op } from "sequelize";
+import { Sequelize } from "sequelize";
 import { Precio, Categoria, Propiedad } from "../models/index.js";
 
 const inicio = async (req, res) => {
@@ -74,14 +74,14 @@ const buscador = async (req, res) => {
 
   //Validar que termino no este vacio
   if (!termino.trim()) {
-    return res.redirect("back");
+    return res.redirect("back");    //* back nos redirige a la pag donde estabamos
   }
 
   //Consultar las propiedades
-  const propiedades = await Propiedad.findAll({
+  const propiedades = await Propiedad.findAll({     // 162 revisar
     where: {
       titulo: {
-        [Op.iLike]: `%${termino}%`,
+        [Sequelize.Op.iLike]: `%${termino}%`,
       },
       publicado: true,
     },

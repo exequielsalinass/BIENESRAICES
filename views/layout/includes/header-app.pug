@@ -20,6 +20,6 @@ div(class="bg-indigo-700 py-5 hidden lg:block")
         form(action="/buscador" method="POST" class="flex gap-3 items-center")
             input(type="hidden" name="_csrf" value= csrfToken)
             label(for="termino" class="text-sm uppercase font-bold text-white") Búsqueda
-            input(type="text" id="termino" name="termino" placeholder="Buscar Propiedades.." class="p-2 rounded-lg shadow text-sm")
+            input(type="text" id="termino" name="termino" placeholder="Buscar Propiedades" class="p-2 rounded-lg shadow text-sm ")
 
             input(type="submit" class="bg-indigo-800 rounded-lg text-white uppercase font-bold p-2 hover:bg-indigo-400 cursor-pointer text-sm" value="Buscar")   

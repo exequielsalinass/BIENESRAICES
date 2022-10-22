@@ -21,7 +21,7 @@ const admin = async (req, res) => {
     const limit = 5;
     const offset = paginaActual * limit - limit;
 
-    const [propiedades , total] = await Promise.all([
+    const [propiedades, total] = await Promise.all([
       Propiedad.findAll({
         limit: limit,
         offset: offset,
@@ -324,6 +324,7 @@ const eliminar = async (req, res) => {
 
 const mostrarPropiedad = async (req, res) => {
   const { id } = req.params;
+  console.log(req.usuario);
 
   try {
     // Comprobar que la propiedad exista

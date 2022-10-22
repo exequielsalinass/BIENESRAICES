@@ -5,12 +5,12 @@ import {
   buscador,
   noEncontrado,
 } from "../controllers/appController.js";
-/* import identificarUsuario from "../middleware/identificarUsuario.js"; */
+import identificarUsuario from "../middleware/identificarUsuario.js";
 
 const router = express.Router();
 
 //Pagina de Inicio
-router.get("/", inicio);
+router.get("/", identificarUsuario, inicio);
 
 //Categorias
 router.get("/categorias/:id", categoria);

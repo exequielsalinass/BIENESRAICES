@@ -82,7 +82,7 @@ router.post(
   "/propiedad/:id",
   identificarUsuario,
   body("mensaje")
-    .isLength({ min: 20 })
+    .isLength({ min: 10 })
     .withMessage("El Mensaje no puede ir vacio o es muy corto"),
   enviarMensaje
 );

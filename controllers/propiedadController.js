@@ -1,7 +1,14 @@
 import { validationResult } from "express-validator";
 import { unlink } from "node:fs/promises";
-import { Precio, Categoria, Propiedad } from "../models/index.js";
-import { esVendedor } from "../helpers/index.js";
+import {
+  Precio,
+  Categoria,
+  Propiedad,
+  Usuario,
+  Mensaje,
+} from "../models/index.js";
+import { esVendedor, formatearFecha } from "../helpers/index.js";
+/* import { envioDeMensaje } from "../helpers/emails.js"; */
 
 const admin = async (req, res) => {
   // Hago la consulta para traerme todas las propiedades que sean de un usuario
@@ -358,9 +365,9 @@ const enviarMensaje = async (req, res) => {
   try {
     const propiedad = await Propiedad.findByPk(id, {
       include: [
-        { model: Categoria },
-        { model: Precio },
-        { model: Usuario.scope("eliminarPassword") },
+        { model: Precio, as: 'precio' },
+        { model: Categoria, as: 'categoria' },
+        /* { model: Usuario.scope("eliminarPassword") }, */
       ],
     });
 
@@ -382,19 +389,23 @@ const enviarMensaje = async (req, res) => {
       });
     }
 
+    const { mensaje } = req.body;
+    const { id: propiedadeId } = req.params;
+    const { id: usuarioId } = req.usuario;
+
     //Almacenar Mensaje
     await Mensaje.create({
-      mensaje: req.body.mensaje,
-      usuarioId: req.usuario.id,
-      propiedadId: req.params.id,
+      propiedadeId,
+      mensaje,
+      usuarioId,
     });
 
-    envioDeMensaje({
+    /* envioDeMensaje({
       email: propiedad.usuario.email,
       nombre: propiedad.usuario.nombre,
       enviador: req.usuario.email,
       nombrePropiedad: propiedad.titulo,
-    });
+    }); */
 
     res.render("propiedades/mostrar", {
       propiedad: propiedad,
@@ -404,14 +415,16 @@ const enviarMensaje = async (req, res) => {
       esVendedor: esVendedor(req.usuario?.id, propiedad?.usuarioId), // Se fija si el usuario que esta visitando la propiedad es el mismo que la creó
       enviado: true,
     });
+    
   } catch (error) {
+    console.log(error);
     return res.redirect("/404");
   }
 };
 
 //Leer mensajes recibidos
 const verMensajes = async (req, res) => {
-  const { id } = req.params;
+  /* const { id } = req.params;
   const { usuario } = req;
 
   //Validar que la propiedad exista
@@ -437,7 +450,7 @@ const verMensajes = async (req, res) => {
     pagina: "Mensajes",
     mensajes: propiedad.mensajes,
     formatearFecha: formatearFecha,
-  });
+  }); */
 };
 
 export {

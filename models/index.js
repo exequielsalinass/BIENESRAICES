@@ -10,4 +10,4 @@ Propiedad.belongsTo(Usuario);
 Mensaje.belongsTo(Propiedad);
 Mensaje.belongsTo(Usuario);
 
-export { Mensaje, Propiedad, Precio, Usuario, Categoria };
+export { Mensaje, Precio, Usuario, Categoria, Propiedad };

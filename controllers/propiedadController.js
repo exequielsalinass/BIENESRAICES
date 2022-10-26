@@ -39,6 +39,7 @@ const admin = async (req, res) => {
         include: [
           { model: Categoria }, // se le puede agregar esto : , as: "categoria" (para llamarlo como queramos)
           { model: Precio },
+          { model: Mensaje },
         ],
       }),
       Propiedad.count({ where: { usuarioId: usuario.id } }), // Para contar la cantidad de propiedades totales
@@ -365,8 +366,8 @@ const enviarMensaje = async (req, res) => {
   try {
     const propiedad = await Propiedad.findByPk(id, {
       include: [
-        { model: Precio, as: 'precio' },
-        { model: Categoria, as: 'categoria' },
+        { model: Precio, as: "precio" },
+        { model: Categoria, as: "categoria" },
         /* { model: Usuario.scope("eliminarPassword") }, */
       ],
     });
@@ -415,7 +416,6 @@ const enviarMensaje = async (req, res) => {
       esVendedor: esVendedor(req.usuario?.id, propiedad?.usuarioId), // Se fija si el usuario que esta visitando la propiedad es el mismo que la creó
       enviado: true,
     });
-    
   } catch (error) {
     console.log(error);
     return res.redirect("/404");
@@ -424,7 +424,7 @@ const enviarMensaje = async (req, res) => {
 
 //Leer mensajes recibidos
 const verMensajes = async (req, res) => {
-  /* const { id } = req.params;
+  const { id } = req.params;
   const { usuario } = req;
 
   //Validar que la propiedad exista
@@ -450,7 +450,7 @@ const verMensajes = async (req, res) => {
     pagina: "Mensajes",
     mensajes: propiedad.mensajes,
     formatearFecha: formatearFecha,
-  }); */
+  });
 };
 
 export {
